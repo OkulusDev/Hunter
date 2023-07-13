@@ -4,7 +4,7 @@ TYPE_OF_HUNTER=cli
 PIP_REQIREMENTS=requirements.txt
 
 run:
-	$(PYTHON) hunter.py $(TYPE_OF_HUNTER)
+	$(PYTHON) hunter.py
 
 depends:
 	$(PIP) install -r $(PIP_REQUIREMENTS)
