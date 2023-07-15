@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""ShadowHunter - is a pack of programs for interacting with the Internet, for conducting penetration testing, working with Linux and OSINT
+"""Hunter - is a pack of programs for interacting with the Internet, for conducting penetration testing, working with Linux and OSINT
 Copyright (C) 2022, 2023 Okulus Dev (Alexeev Bronislav)
 
 This program is free software: you can redistribute it and/or modify

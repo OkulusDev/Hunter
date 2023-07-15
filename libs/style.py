@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
-"""Hunter - Tool for OSINT, networking and ethical hacking
-Copyright (C) 2023  Okulus Dev
+#!/usr/bin/python3
+"""Hunter - is a pack of programs for interacting with the Internet, for conducting penetration testing, working with Linux and OSINT
+Copyright (C) 2022, 2023 Okulus Dev (Alexeev Bronislav)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -11,13 +12,30 @@ the Free Software Foundation, either version 3 of the License, or
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+GNU General Public License for more detailsession.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>"""
+along with this program.  If not, see <https://www.gnu.org/licenses/>."""
 from sys import stdout, stdin
 from time import sleep
 import os
+
+logo = """
+  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠤⣴⣶⣶⣶⣶⣦⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  ⠀⠀⠀⠀⠀⠀⣀⣴⣾⣿⣶⣄⠈⠻⣿⣿⣿⣿⣿⣿⡀⢰⣦⣀⠀⠀⠀⠀⠀⠀
+   ⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣷⣤⡀⠙⢿⣿⣿⣿⡇⠀⣿⣿⣷⡄⠀⠀⠀
+  ⠀⠀⠀⡰⠿⠿⠿⠿⠛⠛⠛⠛⠋⠉⠉⠀⠀⠈⠻⣿⡇⠀⣿⣿⣿⣿⣆⠀⠀⠀
+  ⠀⠀⣀⣤⣤⣤⣤⣴⣶⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⣿⣿⣿⣿⡿⠂⠀⠀
+  ⠀⢀⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⠋⢀⣴⡀⠀
+  ⠀⢸⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠟⠁⣠⣾⣿⡇⠀
+  ⠀⢸⣿⣿⠋⢀⣴⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⡇⠀
+  ⠀⠈⠟⠁⣠⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⠁⠀
+  ⠀⠀⠠⣾⣿⣿⣿⣿⠀⢠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠴⠿⠿⠟⠛⠛⠛⠋⠀⠀
+  ⠀⠀⠀⠹⣿⣿⣿⣿⠀⢸⣿⣦⣄⠀⠀⣀⣀⣀⣤⣤⣤⣤⣤⣶⣶⣶⠆⠀⠀⠀
+  ⠀⠀⠀⠀⠘⢿⣿⣿⡄⠸⣿⣿⣿⣷⣄⡈⠙⢿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀
+  ⠀⠀⠀⠀⠀⠀⠉⠻⠇⠀⣿⣿⣿⣿⣿⣿⣦⡀⠉⠻⣿⡿⠟⠉⠀⠀⠀⠀⠀⠀
+	⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠻⠿⠿⠿⠿⠟⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+"""
 
 
 def cls():
@@ -127,3 +145,32 @@ class Style:
 			if char == 3: return
 			elif char in (10, 13): return text
 			else: text += chr(char)
+
+
+menu = f"""{FG().cyan}   ██░ ██   █    ██   ███▄    █  ▄▄▄█████▓ ▓█████   ██▀███  
+  ▓██░ ██▒  ██  ▓██▒  ██ ▀█   █  ▓  ██▒ ▓▒ ▓█   ▀  ▓██ ▒ ██▒
+{FG().yellow}  ▒██▀▀██░ ▓██  ▒██░ ▓██  ▀█ ██▒ ▒ ▓██░ ▒░ ▒███    ▓██ ░▄█ ▒
+  ░▓█ ░██  ▓▓█  ░██░ ▓██▒  ▐▌██▒ ░ ▓██▓ ░  ▒▓█  ▄  ▒██▀▀█▄  
+  ░▓█▒░██▓ ▒▒█████▓  ▒██░   ▓██░  ▒██▒ ░ ░ ▒████▒░  ██▓ ▒██▒
+{FG().red}   ▒ ░░▒░▒ ░▒▓▒ ▒ ▒  ░ ▒░   ▒ ▒   ▒ ░░   ░ ░ ▒░ ░░  ▒▓ ░▒▓░
+   ▒ ░▒░ ░ ░░▒░ ░ ░  ░ ░░   ░ ▒░    ░      ░ ░  ░   ░▒ ░ ▒░
+   ░  ░░ ░  ░░░ ░ ░    ░   ░ ░   ░         ░      ░░   ░ 
+   ░  ░  ░    ░              ░             ░  ░    ░     
+{FG.rgb(64, 224, 208)}
+	  ╔════════════════════════════════════════════════╗
+	  ║                     Другое                     ║
+	  ║ 0 - Выход                                      ║
+	  ║                   Анонимность                  ║
+	  ║ 1. Замена MAC-адреса                           ║
+	  ║ 2. Генерация фейкового User-Agent              ║
+	  ║                     Сканнеры                   ║
+	  ║ 3. Сканнер SQL-инъекций                        ║
+	  ║ 4. Сканнер XSS-уяизвимостей                    ║
+	  ║                      OSINT                     ║
+	  ║ 5. Информация о IP адресе                      ║
+	  ║ 6. Информация о номере телефона                ║
+	  ║ 7. Получить IP адрес сайта                     ║
+	  ║ 8. Получить название сервера сайта             ║
+	  ║ 9. Получить все ссылки с сайта                 ║
+	  ╚════════════════════════════════════════════════╝
+"""
