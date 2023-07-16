@@ -30,6 +30,8 @@ import modules.anonymity.machanger as machanger							# Импорт модул�
 # Модули белого хакинга
 import modules.whitehack.sqlinj_scanner as sqlinj_scanner				# Импорт модуля сканирования SQL-инъекций
 import modules.whitehack.xss_scanner as xss_scanner 					# Импорт модуля сканирования XSS уязвимостей
+import modules.whitehack.port_scanner as port_scanner
+import modules.whitehack.synport_scanner as synport_scanner
 
 # Модули OSINT технологий
 import modules.osint.ip as osintip										# Импорт модуля поиска информации по IP
@@ -78,17 +80,21 @@ def interactive_mode():
 			fua = fakeuseragent.generate_useragent()
 			xss_scanner.scan_xss(input('Введите ссылку на сайт >>> '), fua)
 		elif cmd == '5':
+			port_scanner.scan_ports(input('Введите ссылку на сайт или IP адрес >>> '))
+		elif cmd == '6':
+			synport_scanner.start_scan(input('Введите ссылку на сайт или IP адрес >>> '))
+		elif cmd == '7':
 			fua = fakeuseragent.generate_useragent()
 			osintip.get_info_about_ip(input('Введите IP-адрес >>> '), fua)
-		elif cmd == '6':
-			fua = fakeuseragent.generate_useragent()
-			osintphone.get_info_phonenumber(input('Введите номер телефона >>> '), fua)
-		elif cmd == '7':
-			iphost_osint.get_ip(input('Введите ссылку на сайт (без протокола) >>> '))
 		elif cmd == '8':
 			fua = fakeuseragent.generate_useragent()
-			iphost_osint.get_server_name(input('Введите ссылку на сайт'), fua)
+			osintphone.get_info_phonenumber(input('Введите номер телефона >>> '), fua)
 		elif cmd == '9':
+			iphost_osint.get_ip(input('Введите ссылку на сайт (без протокола) >>> '))
+		elif cmd == '10':
+			fua = fakeuseragent.generate_useragent()
+			iphost_osint.get_server_name(input('Введите ссылку на сайт'), fua)
+		elif cmd == '11':
 			extractlinks.internal_urls = set()
 			extractlinks.external_urls = set()
 			target_url = input('Введите ссылку на страницу >>> ')
