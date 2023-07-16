@@ -24,6 +24,7 @@ def get_ip(hostname):
 	except Exception as e:
 		return f"[!] Произошла ошибка: {e}"
 
+
 def get_server_name(hostname, fua):
 	try:
 		headers = {

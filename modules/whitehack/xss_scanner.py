@@ -23,7 +23,7 @@ from urllib.parse import urljoin
 def get_all_forms(url, fua):
 	"""Вводится `url`, это возвращает все формы из HTML-контента"""
 	headers = {
-    	'User-Agent': 'My User Agent 1.0'
+    	'User-Agent': fua
     }
 
 	soup = bs(requests.get(url, headers=headers).content, "html.parser")
