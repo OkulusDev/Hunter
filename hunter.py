@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
 	for line in logo.split('\n'):
 		# Выводим лого
-		Style.writew(f"{line}\n", 0.002)
+		Style.writew(f"{line}\n", 0.0015)
 
 	# Входим в интерактивный режим
 	interactive_mode()
