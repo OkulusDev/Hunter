@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>."""
 import sys																# Импорт библиотеки sys
 from random import randint												# Импорт библиотеки рандома
+import argparse 														# Импорт библиотеки для аргументов командной строки
 
 # Библиотеки
 from libs.style import cls, FG, BG, Style								# Импорт локальной библиотеки цветов
@@ -47,7 +48,6 @@ def clear_bg():
 
 def interactive_mode():
 	"""Интерактивный режим"""
-
 	while True:
 		# Бесконечный цикл
 		clear_bg()
@@ -67,7 +67,7 @@ def interactive_mode():
 			# Замена MAC-Адреса
 			clear_bg()
 			print(machanger.ifconfig())
-			machanger.main(input('Введите название интерфейса >>> '))
+			machanger.main(input('Enter interface name >>> '))
 		elif cmd == '2':
 			# Генерация фейкового User-Agent
 			fua = fakeuseragent.generate_useragent()
@@ -75,39 +75,44 @@ def interactive_mode():
 		elif cmd == "3":
 			# Сканнер SQL-инъекций
 			fua = fakeuseragent.generate_useragent()
-			sqlinj_scanner.scanning(fua, input('Введите ссылку на сайт >>> '))
+			sqlinj_scanner.scanning(fua, input('Enter link >>> '))
 		elif cmd == '4':
+			# Сканнер xss-инъекций
 			fua = fakeuseragent.generate_useragent()
-			xss_scanner.scan_xss(input('Введите ссылку на сайт >>> '), fua)
+			xss_scanner.scan_xss(input('Enter link >>> '), fua)
 		elif cmd == '5':
-			port_scanner.scan_ports(input('Введите ссылку на сайт или IP адрес >>> '))
+			# Сканнер портов
+			port_scanner.scan_ports(input('Enter link or IP address >>> '))
 		elif cmd == '6':
-			synport_scanner.start_scan(input('Введите ссылку на сайт или IP адрес >>> '))
+			# SYN сканнер портов
+			synport_scanner.start_scan(input('Enter link or IP address >>> '))
 		elif cmd == '7':
+			# Информация об IP адресе
 			fua = fakeuseragent.generate_useragent()
-			osintip.get_info_about_ip(input('Введите IP-адрес >>> '), fua)
+			osintip.get_info_about_ip(input('Enter IP address >>> '), fua)
 		elif cmd == '8':
+			# Информация о номере телефона
 			fua = fakeuseragent.generate_useragent()
-			osintphone.get_info_phonenumber(input('Введите номер телефона >>> '), fua)
+			osintphone.get_info_phonenumber(input('Enter phone number >>> '), fua)
 		elif cmd == '9':
-			iphost_osint.get_ip(input('Введите ссылку на сайт (без протокола) >>> '))
+			iphost_osint.get_ip(input('Enter link >>> '))
 		elif cmd == '10':
 			fua = fakeuseragent.generate_useragent()
-			iphost_osint.get_server_name(input('Введите ссылку на сайт'), fua)
+			iphost_osint.get_server_name(input('Enter link'), fua)
 		elif cmd == '11':
 			extractlinks.internal_urls = set()
 			extractlinks.external_urls = set()
-			target_url = input('Введите ссылку на страницу >>> ')
+			target_url = input('Enter link >>> ')
 
 			try:
-				extractlinks.get_links(target_url, int(input('Введите максимальное количество ссылок для проверки >>> ')))
+				extractlinks.get_links(target_url, int(input('Enter max links count >>> ')))
 			except ValueError:
-				print('[!] Вы ввели не число. Используется значение по умолчанию (30)')
+				print('[!] You dont enter number. Used default number (30)')
 				extractlinks.get_links(target_url, 30)
 		else:
-			Style.write(FG.red + f"Команда {cmd} не найдена\n")
+			Style.write(FG.red + f"Command {cmd} not found\n")
 
-		input('Нажмите Enter чтобы продолжить . . . ')
+		input('Press enter to continue . . . ')
 
 	clear_bg()
 	exit()
@@ -116,14 +121,55 @@ def interactive_mode():
 if __name__ == '__main__':
 	"""Если файл исполняемый, а не импортируется"""
 
-	# Заполняем рабочее пронстранство
-	Style.write(BG.rgb(11, 11, 11) + FG.rgb(64, 224, 208))
-	Style.write(Style.clear)
-	Style.write(Style.top)
+	if len(sys.argv) > 1:
+		# Режим аргументов командной строки
+		parser = argparse.ArgumentParser(description='Hunter - is a pack of programs for interacting with the Internet, for conducting penetration testing, working with Linux and OSINT')
+		parser.add_argument('--random-mac', type=str,
+							help='Generate a random mac address')
+		parser.add_argument('--sqlinj-scanner', type=str,
+							help='Scanning the site for sql injections')
+		parser.add_argument('--xss-scanner', type=str,
+							help='Scanning the site for xss vulnerabilities')
+		parser.add_argument('--scan-ports', type=str,
+							help='Port Scanning')
+		parser.add_argument('--syn-scan-ports', type=str,
+							help='SYN Port Scanning')
+		parser.add_argument('--ip-info', type=str,
+							help='Get information about IP address')
+		parser.add_argument("--phone-info", type=str,
+							help='Get information about phone number')
+		parser.add_argument("--ip2host", type=str,
+							help='Get hostname by IP address')
 
-	for line in logo.split('\n'):
-		# Выводим лого
-		Style.writew(f"{line}\n", 0.0015)
+		args = parser.parse_args()
+		fua = fakeuseragent.generate_useragent()
 
-	# Входим в интерактивный режим
-	interactive_mode()
+		# Проверяем аргументы
+		if args.random_mac:
+			machanger.main(args.random_mac)
+		elif args.sqlinj_scanner:
+			sqlinj_scanner.scanning(fua, args.sqlinj_scanner)
+		elif args.xss_scanner:
+			xss_scanner.scan_xss(args.xss_scanner, fua)
+		elif args.scan_ports:
+			port_scanner.scan_ports(args.scan_ports)
+		elif args.syn_scan_ports:
+			synport_scanner.start_scan(args.syn_scan_ports)
+		elif args.ip_info:
+			osintip.get_info_about_ip(args.ip_info, fua)
+		elif args.phone_info:
+			osintphone.get_info_phonenumber(args.phone_info, fua)
+		elif args.ip2host:
+			iphost_osint.get_ip(args.ip2host)
+	else:
+		# Заполняем рабочее пронстранство
+		Style.write(BG.rgb(11, 11, 11) + FG.rgb(64, 224, 208))
+		Style.write(Style.clear)
+		Style.write(Style.top)
+
+		for line in logo.split('\n'):
+			# Выводим лого
+			Style.writew(f"{line}\n", 0.0015)
+
+		# Входим в интерактивный режим
+		interactive_mode()
