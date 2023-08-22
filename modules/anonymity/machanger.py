@@ -33,11 +33,11 @@ def change_mac(interface: str, new_mac_address: str) -> None:
 	 + interface: str - название интерфейса (ex. wlan0, wlp1s0, wlp3s0, eth)
 	 + new_mac_address - значение нового mac-адреса"""
 	print(f'[+] Выключение {interface}')
-	subprocess.call(["sudo", "ifconfig", interface, "down"])
+	subprocess.call(["doas", "ifconfig", interface, "down"])
 	print(f'[+] Замена MAC-адреса {interface} на {new_mac_address}')
-	subprocess.call(["sudo", 'ifconfig', interface, 'hw', 'ether', new_mac_address])
+	subprocess.call(["doas", 'ifconfig', interface, 'hw', 'ether', new_mac_address])
 	print(f'[+] Включение {interface}')
-	subprocess.call(["sudo", "ifconfig", interface, "up"])
+	subprocess.call(["doas", "ifconfig", interface, "up"])
 
 
 def get_random_mac_address() -> str:
@@ -59,7 +59,7 @@ def get_random_mac_address() -> str:
 
 def get_current_mac(interface: str):
 	"""Получаем текущий MAC-адрес при помощи утилиты ifconfig"""
-	output = subprocess.check_output(["sudo", "ifconfig", interface])
+	output = subprocess.check_output(["doas", "ifconfig", interface])
 
 	return re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", str(output)).group(0)
 

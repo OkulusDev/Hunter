@@ -11,15 +11,6 @@ Hunter поддерживает ___интерактивный режим___ и _
 
 Для установки выполните следующие команды:
 
-```
-git clone https://github.com/okulusdev/hunter.git
-cd hunter
-python3 -m venv venv
-source venv/bin/activate
-make install
-make rootinstall
-```
-
 После вы можете запускать команду make run для интерактивного режима, или python3 hunter.py --help для просмотра аргументов (режим аргументов командной строки)
 
 ---

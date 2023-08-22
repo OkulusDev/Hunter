@@ -29,10 +29,10 @@ import modules.anonymity.fakeuseragent as fakeuseragent 				# Импорт мо�
 import modules.anonymity.machanger as machanger							# Импорт модуля замены MAC
 
 # Модули белого хакинга
-import modules.whitehack.sqlinj_scanner as sqlinj_scanner				# Импорт модуля сканирования SQL-инъекций
-import modules.whitehack.xss_scanner as xss_scanner 					# Импорт модуля сканирования XSS уязвимостей
-import modules.whitehack.port_scanner as port_scanner
-import modules.whitehack.synport_scanner as synport_scanner
+import modules.scanners.sqlinj_scanner as sqlinj_scanner				# Импорт модуля сканирования SQL-инъекций
+import modules.scanners.xss_scanner as xss_scanner 					# Импорт модуля сканирования XSS уязвимостей
+import modules.scanners.port_scanner as port_scanner
+import modules.scanners.synport_scanner as synport_scanner
 
 # Модули OSINT технологий
 import modules.osint.ip as osintip										# Импорт модуля поиска информации по IP
@@ -95,7 +95,7 @@ def interactive_mode():
 			fua = fakeuseragent.generate_useragent()
 			osintphone.get_info_phonenumber(input('Enter phone number >>> '), fua)
 		elif cmd == '9':
-			iphost_osint.get_ip(input('Enter link >>> '))
+			print(iphost_osint.get_ip(input('Enter link >>> ')))
 		elif cmd == '10':
 			fua = fakeuseragent.generate_useragent()
 			iphost_osint.get_server_name(input('Enter link'), fua)
@@ -160,7 +160,7 @@ if __name__ == '__main__':
 		elif args.phone_info:
 			osintphone.get_info_phonenumber(args.phone_info, fua)
 		elif args.ip2host:
-			iphost_osint.get_ip(args.ip2host)
+			print(iphost_osint.get_ip(args.ip2host))
 	else:
 		# Заполняем рабочее пронстранство
 		Style.write(BG.rgb(11, 11, 11) + FG.rgb(64, 224, 208))
